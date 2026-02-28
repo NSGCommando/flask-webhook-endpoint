@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request, render_template, abort
 from app.project_logger import project_logger # need to run from project root for absolute imports to work
 from app.extensions import mongo
 import hmac, hashlib, os
-from datetime import datetime
+from datetime import datetime, timezone
 
 SECRET = os.getenv("SECRET_KEY")
 webhook = Blueprint('Webhook', __name__, url_prefix='/webhook')
@@ -73,7 +73,8 @@ def receiver():
         raw_time = data.get("repository", {}).get("pushed_at") 
         # Convert to string(datetime) format: "YYYY-MM-DD HH:MM:SS"
         if isinstance(raw_time, (int, float)):
-            received_timestamp = datetime.fromtimestamp(raw_time).strftime('%Y-%m-%d %H:%M:%S')
+            dt_object = datetime.fromtimestamp(raw_time, tz=timezone.utc)
+            received_timestamp = dt_object.strftime('%Y-%m-%d %H:%M:%S UTC') # Format to ISO 8601 / UTC standard
         else:
             received_timestamp = str(raw_time) # Fallback cast
         log_doc["timestamp"] = received_timestamp
