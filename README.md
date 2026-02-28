@@ -15,18 +15,21 @@ Please use this repository for constructing the Flask webhook receiver.
 - The URI in the actions-originator repo's ```action-trigger.yml``` will need to be replaced by the new one each time a tunnel is created anew
 
 ## Testing
-- Testing was done by creating a basic .yml workflow file in the github-actions-originator repo (```https://github.com/NSGCommando/github-actions-originator```), which runs on all push and pull_requests and POSTS to an exposed webhook API
+- Testing is done by creating a native webhook in the github-actions-originator repo (```https://github.com/NSGCommando/github-actions-originator```), which runs on all push and pull_requests and POSTS to an exposed webhook API
 - Webhook API is exposed through tunnelling ```localhost:5000``` to public network via Cloudflared binary (Windows x64)
 - Cloudflared terminal will output the random URL, example ```https://dealtime-clothing-intl-ciao.trycloudflare.com/```
-
-- Append ```/webhook/dashboard``` to the URL
-- Add the resulting URL to the  ```-Uri=""``` property in the ```action-trigger.yml``` file in the github-actions-originator repo
-- Replace any old URL present there if needed
+- Append ```/webhook/receiver``` to the URL
+- Copy the resulting URL in the "Payload URL" property in the webhook's settings in github-actions-originator repo
 - Database was run on port localhost:27017 in Docker via MongoDB 8.2.5 Image
 - Mongo Image Hash: ```sha256:474f5c3bf0e355bb97dafda730e725169a4d51c5578abf7be9ec7ad3fdee4481```
 - ```project_logger.py``` provides a logger utliity that outputs to /logs/eventLogs.log
 
+## Logic
+- Backend Flask app checks for PUSH, PULL_REQUEST and MERGE via chacking if:
+ - response data has "event" as "push"
+ - response data has "event" as "pull_request"
+  - if response data has "merged" value and "action" is "closed"
+- "merged" property is only populated on successful merging of a pull request
 
 ## Demo
-![repo-webhook-listener-demo](https://github.com/user-attachments/assets/6f79fc0c-1c42-42e6-8ee7-16c23f553f0b)
 *******************
