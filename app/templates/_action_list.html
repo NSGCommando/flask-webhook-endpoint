@@ -1,0 +1,22 @@
+{% for action in actions %}
+<tr>
+    <td>#{{ action.request_id }}</td>
+    <td>
+        {% if action.action == 'PUSH' %}
+            "{{ action.author }}" pushed to "{{ action.to_branch }}" on {{ action.timestamp }}
+        {% elif action.action == 'PULL_REQUEST' %}
+            "{{ action.author }}" submitted a pull request from "{{ action.from_branch }}" to "{{ action.to_branch }}" on {{ action.timestamp }}
+        {% elif action.action == 'MERGE' %}
+            "{{ action.author }}" merged branch "{{ action.from_branch }}" to "{{ action.to_branch }}" on {{ action.timestamp }}
+        {% else %}
+            Unknown Action
+        {% endif %}
+    </td>
+</tr>
+{% else %}
+<tr>
+    <td colspan="2" style="text-align: center; padding: 20px; color: #666;">
+        <em>No webhook activity found yet. Waiting for incoming data...</em>
+    </td>
+</tr>
+{% endfor %}
