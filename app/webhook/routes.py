@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, render_template
 from app.project_logger import project_logger # need to run from project root for absolute imports to work
 from app.extensions import mongo
 
@@ -7,20 +7,20 @@ webhook = Blueprint('Webhook', __name__, url_prefix='/webhook')
 @webhook.route('/receiver', methods=["POST"])
 def receiver():
     if mongo.db is None:
-        raise RuntimeError("Mongo DB has not been initialized with init_app(app)")
+        raise RuntimeError("Mongo DB has not been initialized")
     data =request.get_json(silent=True) # use get_json() to handle possible empty responses
     if not data:
         project_logger.warning("No event JSON received!")
         return jsonify({"error": "No JSON payload received"}), 400
     
-    event = data.get("event_type")
+    event = data.get("event")
     merged_at = data.get("merged_at")
     pr_action = data.get("pr_action")
     author = data.get("author")
     request_id = data.get("request_id")
     received_timestamp = data.get("timestamp")
-    pr_from = data.get("pr_from")
-    pr_to = data.get("pr_to")
+    pr_from = data.get("from_branch")
+    pr_to = data.get("to_branch")
     # compile all relevant data
     log_doc={
                 "request_id": request_id,
@@ -58,3 +58,16 @@ def receiver():
         mongo.db["webhook_logs"].insert_one(log_doc)
     project_logger.info("Received Request")
     return jsonify({"status": "received"}), 200
+
+@webhook.route('/dashboard')
+def show_dashboard():
+    # Load the main shell of the page
+    return render_template('dashboard.html')
+
+@webhook.route('/actions-data')
+def actions_data():
+    if mongo.db is None:
+        raise RuntimeError("Mongo DB has not been initialized")
+    actions_cursor = mongo.db["webhook_logs"].find().sort('_id', -1).limit(10)
+    actions = list(actions_cursor) # Convert cursor to a list
+    return render_template('_action_list.html', actions=actions)
