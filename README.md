@@ -4,7 +4,7 @@ Please use this repository for constructing the Flask webhook receiver.
 
 *******************
 ## Architecture
-- Uses Flask for the weblogger
+- Uses Flask for the webhook logger
 - Uses HTMX and Jinja2 templating for reactive UI and 15-sec polling
 - Project-wide logger utility for debugging
 
@@ -32,4 +32,5 @@ Please use this repository for constructing the Flask webhook receiver.
 - "merged" property is only populated on successful merging of a pull request
 
 ## Demo
+![native-webhook-listener-demo](https://github.com/user-attachments/assets/08f70c54-8a43-4d81-82cd-ccb97be759a3)
 *******************
