@@ -29,14 +29,14 @@ def receiver():
     if sha_name != 'sha256':
         project_logger.error("Unsupported hash algorithm")
         abort(400, "Unsupported hash algorithm")
-    # generate local hash
+    # generate local hash via hexdigest
     local_hash = hmac.new(
         SECRET.encode('utf-8'), 
         msg=request.get_data(), 
         digestmod=hashlib.sha256
     ).hexdigest()
 
-    # Compare hashes
+    # Compare hashes via comparing the digest to prevent timing attacks
     if not hmac.compare_digest(local_hash, signature_hash):
         project_logger.error("Invalid webhook signature")
         abort(401, "Invalid signature")
