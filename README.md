@@ -27,6 +27,8 @@
 - Nagivate to the dashboard UI by replacing "receiver" with "dashboard" and pasting in browser search bar
 
 ## Logic
+- Backend checks the webhook hash first, via Hmac and Hashlib
+  - If hash is missing or incorrect, raises an HTTP abort error
 - Backend Flask app checks for PUSH, PULL_REQUEST and MERGE via checking if:
  - response data has "event" as "push"
  - response data has "event" as "pull_request"
