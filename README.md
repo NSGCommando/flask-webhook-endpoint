@@ -13,7 +13,7 @@
 - Download the Cloudflared binary for Windows(x64 version) from: ```https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/downloads/```
 - Place it in /tools/ (create folder if not present)
 - Batch file ```run_tunnel.bat``` is provided to expose local Flask API to a random public URL using the binary
-- The URI in the actions-originator repo's ```action-trigger.yml``` will need to be replaced by the new one each time a tunnel is created anew
+- The URI in the actions-originator repo's webhook settings will need to be replaced by the new one each time a tunnel is created anew
 
 ## Testing
 - Testing is done by creating a native webhook in the github-actions-originator repo (```https://github.com/NSGCommando/github-actions-originator```), which runs on all push and pull_requests and POSTS to an exposed webhook API
