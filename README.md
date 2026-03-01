@@ -1,6 +1,7 @@
 # Dev Assessment - Webhook Receiver
 
-Please use this repository for constructing the Flask webhook receiver.
+## Demo
+![native-webhook-listener-demo](https://github.com/user-attachments/assets/08f70c54-8a43-4d81-82cd-ccb97be759a3)
 
 *******************
 ## Architecture
@@ -33,6 +34,4 @@ Please use this repository for constructing the Flask webhook receiver.
 - "merged" property is only populated on successful merging of a pull request
 - If the "after" field of response is a string of zeros, that request is a deletion and backend will skip it
 
-## Demo
-![native-webhook-listener-demo](https://github.com/user-attachments/assets/08f70c54-8a43-4d81-82cd-ccb97be759a3)
 *******************
