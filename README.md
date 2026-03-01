@@ -23,6 +23,7 @@ Please use this repository for constructing the Flask webhook receiver.
 - Database was run on port localhost:27017 in Docker via MongoDB 8.2.5 Image
 - Mongo Image Hash: ```sha256:474f5c3bf0e355bb97dafda730e725169a4d51c5578abf7be9ec7ad3fdee4481```
 - ```project_logger.py``` provides a logger utliity that outputs to /logs/eventLogs.log
+- Nagivate to the dashboard UI by replacing "receiver" with "dashboard" and pasting in browser search bar
 
 ## Logic
 - Backend Flask app checks for PUSH, PULL_REQUEST and MERGE via chacking if:
@@ -30,6 +31,7 @@ Please use this repository for constructing the Flask webhook receiver.
  - response data has "event" as "pull_request"
   - if response data has "merged" value and "action" is "closed"
 - "merged" property is only populated on successful merging of a pull request
+- If the "after" field of response is a string of zeros, that request is a deletion and backend will skip it
 
 ## Demo
 ![native-webhook-listener-demo](https://github.com/user-attachments/assets/08f70c54-8a43-4d81-82cd-ccb97be759a3)
