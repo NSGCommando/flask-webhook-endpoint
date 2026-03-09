@@ -1,4 +1,4 @@
-# Dev Assessment - Webhook Receiver
+# Flask Webhook Receiver
 
 ## Demo
 ![native-webhook-listener-demo](https://github.com/user-attachments/assets/08f70c54-8a43-4d81-82cd-ccb97be759a3)
